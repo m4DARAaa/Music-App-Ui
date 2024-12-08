@@ -37,31 +37,6 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DrawerItem(
-    selected: Boolean, item: Screen.DrawerScreen, onDrawerItemClicked: () -> Unit
-) {
-    val background = if (selected) Color.DarkGray else Color.White
-    Row(
-        Modifier
-            .fillMaxSize()
-            .padding(horizontal = 8.dp, vertical = 16.dp)
-            .background(background)
-            .clickable {
-                onDrawerItemClicked()
-            }) {
-        androidx.compose.material.Icon(
-            painter = painterResource(id = item.icon),
-            contentDescription = item.dTitle,
-            Modifier.padding(end = 8.dp, top = 4.dp)
-        )
-        Text(
-            text = item.dTitle, style = MaterialTheme.typography.headlineLarge
-        )
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
 fun MainView() {
     val scaffoldState: ScaffoldState = rememberScaffoldState()
     val scope: CoroutineScope = rememberCoroutineScope()
@@ -104,5 +79,28 @@ fun MainView() {
         }
     }) {
         Text(text = "Text", modifier = Modifier.padding(it))
+    }
+}
+@Composable
+fun DrawerItem(
+    selected: Boolean, item: Screen.DrawerScreen, onDrawerItemClicked: () -> Unit
+) {
+    val background = if (selected) Color.DarkGray else Color.White
+    Row(
+        Modifier
+            .fillMaxSize()
+            .padding(horizontal = 8.dp, vertical = 16.dp)
+            .background(background)
+            .clickable {
+                onDrawerItemClicked()
+            }) {
+        androidx.compose.material.Icon(
+            painter = painterResource(id = item.icon),
+            contentDescription = item.dTitle,
+            Modifier.padding(end = 8.dp, top = 4.dp)
+        )
+        Text(
+            text = item.dTitle, style = MaterialTheme.typography.headlineLarge
+        )
     }
 }
