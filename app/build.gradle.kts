@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace = "com.example.musicappui"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.musicappui"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -50,6 +50,16 @@ android {
 }
 
 dependencies {
+//    val nav_version = "2.7.5"
+//    val compose_version = "1.6.0-alpha08"
+    //noinspection GradleDependency
+    implementation("androidx.navigation:navigation-compose:2.8.4")
+    //noinspection GradleDependency
+    implementation("androidx.compose.ui:ui:1.7.5")
+    //noinspection GradleDependency
+    implementation("androidx.compose.material:material-android:1.7.5")
+    implementation("androidx.compose.ui:ui-tooling-preview:1.7.5")
+
 
     implementation("androidx.core:core-ktx:1.15.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.7")
