@@ -39,8 +39,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.musicappui.AccountDialog
+import com.example.musicappui.AccountView
 import com.example.musicappui.MainViewModel
 import com.example.musicappui.Screen
+import com.example.musicappui.Subscription
 import com.example.musicappui.screensInDrawer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -63,12 +65,12 @@ fun MainView() {
         mutableStateOf(currentScreen.title)
     }
 
-    val dialogOpen=remember{
+    val dialogOpen = remember {
         mutableStateOf(false)
     }
 
     Scaffold(topBar = {
-        TopAppBar(title = { Text(text = "Home") }, navigationIcon = {
+        TopAppBar(title = { Text(text = title.value) }, navigationIcon = {
             IconButton(onClick = {
                 scope.launch {
                     scaffoldState.drawerState.open()
@@ -86,7 +88,7 @@ fun MainView() {
                     }
 
                     if (item.dRoute == "add_account") {
-                      dialogOpen.value=true
+                        dialogOpen.value = true
                     } else {
                         controller.navigate(item.dRoute)
                         title.value = item.dTitle
@@ -132,14 +134,14 @@ fun DrawerItem(
 fun Navigation(navController: NavController, viewModel: MainViewModel, pd: PaddingValues) {
     NavHost(
         navController = navController as NavHostController,
-        startDestination = Screen.DrawerScreen.AddAccount.route, modifier = Modifier.padding(pd)
+        startDestination = Screen.DrawerScreen.Account.route, modifier = Modifier.padding(pd)
     )
     {
-        composable(Screen.DrawerScreen.AddAccount.route) {
-
+        composable(Screen.DrawerScreen.Account.route) {
+            AccountView()
         }
         composable(Screen.DrawerScreen.Subscription.route) {
-
+            Subscription()
         }
 
     }
