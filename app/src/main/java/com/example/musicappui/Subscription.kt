@@ -26,7 +26,7 @@ fun Subscription() {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(text = "Manage Subscription")
-        Card(modifier = Modifier.padding(8.dp), ) {
+        Card(modifier = Modifier.padding(8.dp)) {
             Column(modifier = Modifier.padding(8.dp)) {
                 Column() {
                     Text(text = "Musical")
@@ -50,11 +50,13 @@ fun Subscription() {
 
                 }
                 Divider(thickness = 1.dp, modifier = Modifier.padding(horizontal = 8.dp))
-                Row (Modifier.padding(vertical = 16.dp)){
-                    Icon(imageVector =Icons.Default.AccountBox ,
-                        contentDescription = "Get a plan")
+                Row(Modifier.padding(vertical = 16.dp)) {
+                    Icon(
+                        imageVector = Icons.Default.AccountBox,
+                        contentDescription = "Get a plan"
+                    )
                     Text(text = "Get a plan")
-            }
+                }
 
 
             }

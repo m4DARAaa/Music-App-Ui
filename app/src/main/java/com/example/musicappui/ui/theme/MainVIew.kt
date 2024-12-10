@@ -6,8 +6,11 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.BottomNavigation
+import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.ScaffoldState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
@@ -20,7 +23,6 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -29,20 +31,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
-import androidx.navigation.Navigation
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.musicappui.AccountDialog
 import com.example.musicappui.AccountView
+import com.example.musicappui.HomeView
 import com.example.musicappui.MainViewModel
 import com.example.musicappui.Screen
 import com.example.musicappui.Subscription
+import com.example.musicappui.screensInBottom
 import com.example.musicappui.screensInDrawer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -69,34 +71,61 @@ fun MainView() {
         mutableStateOf(false)
     }
 
-    Scaffold(topBar = {
-        TopAppBar(title = { Text(text = title.value) }, navigationIcon = {
-            IconButton(onClick = {
-                scope.launch {
-                    scaffoldState.drawerState.open()
-                }
-            }) {
-                Icon(imageVector = Icons.Default.AccountCircle, contentDescription = "Menu")
-            }
-        })
-    }, scaffoldState = scaffoldState, drawerContent = {
-        LazyColumn(Modifier.padding(16.dp)) {
-            items(screensInDrawer) { item ->
-                DrawerItem(selected = currentRoute == item.dRoute, item = item) {
-                    scope.launch {
-                        scaffoldState.drawerState.close()
-                    }
+    val bottomBar: @Composable () -> Unit = {
+        if (currentScreen is Screen.DrawerScreen || currentScreen == Screen.BottomScreen.Home) {
+            BottomNavigation(modifier = Modifier.wrapContentSize()) {
+                screensInBottom.forEach { item ->
+                    BottomNavigationItem(
+                        selected = currentRoute == item.bRoute,
+                        onClick = { controller.navigate(item.bRoute) },
+                        icon = {
+                            Icon(
+                                painter = painterResource(id = item.icon),
+                                contentDescription = item.bRoute
+                            )
+                        },
+                        label = { Text(text = item.bRoute) },
+                        selectedContentColor = Color.White,
+                        unselectedContentColor = Color.Black
 
-                    if (item.dRoute == "add_account") {
-                        dialogOpen.value = true
-                    } else {
-                        controller.navigate(item.dRoute)
-                        title.value = item.dTitle
-                    }
+                    )
                 }
+
             }
         }
-    }) {
+    }
+
+
+    Scaffold(
+        bottomBar = bottomBar,
+        topBar = {
+            TopAppBar(title = { Text(text = title.value) }, navigationIcon = {
+                IconButton(onClick = {
+                    scope.launch {
+                        scaffoldState.drawerState.open()
+                    }
+                }) {
+                    Icon(imageVector = Icons.Default.AccountCircle, contentDescription = "Menu")
+                }
+            })
+        }, scaffoldState = scaffoldState, drawerContent = {
+            LazyColumn(Modifier.padding(16.dp)) {
+                items(screensInDrawer) { item ->
+                    DrawerItem(selected = currentRoute == item.dRoute, item = item) {
+                        scope.launch {
+                            scaffoldState.drawerState.close()
+                        }
+
+                        if (item.dRoute == "add_account") {
+                            dialogOpen.value = true
+                        } else {
+                            controller.navigate(item.dRoute)
+                            title.value = item.dTitle
+                        }
+                    }
+                }
+            }
+        }) {
         com.example.musicappui.ui.theme.Navigation(
             navController = controller,
             viewModel = viewModel,
@@ -142,6 +171,15 @@ fun Navigation(navController: NavController, viewModel: MainViewModel, pd: Paddi
         }
         composable(Screen.DrawerScreen.Subscription.route) {
             Subscription()
+        }
+        composable(Screen.BottomScreen.Home.bRoute) {
+            HomeView()
+        }
+        composable(Screen.BottomScreen.Library.bRoute) {
+
+        }
+        composable(Screen.BottomScreen.Browse.bRoute) {
+
         }
 
     }

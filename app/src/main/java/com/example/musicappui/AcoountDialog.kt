@@ -78,8 +78,8 @@ fun AccountDialog(dialogOpen: MutableState<Boolean>) {
                 .background(MaterialTheme.colors.primarySurface)
                 .padding(8.dp),
             shape = RoundedCornerShape(5.dp),
-            containerColor =  Color.White,
-            properties=DialogProperties(
+            containerColor = Color.White,
+            properties = DialogProperties(
                 dismissOnBackPress = true,
                 dismissOnClickOutside = true
             )
